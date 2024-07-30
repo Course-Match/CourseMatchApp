@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Match Algorithm</title>
+    <link rel="stylesheet" href="static/home.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Course Match Algorithm</h1>
+        <p>Efficiently matching students to their desired courses</p>
+    </header>
+    
+    <section class="content">
+        <article>
+            <h2>Understanding the Course Match Problem</h2>
+            <p>The Course Match problem involves assigning students to courses in a way that optimizes their preferences and satisfies constraints such as course capacities and prerequisites. This problem is critical in educational institutions to ensure fair and efficient allocation of courses to students.</p>
+        </article>
+        
+        <article>
+            <h2>The Course Match Algorithm</h2>
+            <p>The Course Match Algorithm is designed to solve the Course Match problem by using advanced optimization techniques. It takes into account students' preferences, course capacities, and other constraints to find an optimal solution that maximizes overall student satisfaction.</p>
+        </article>
+    </section>
+    
+    <section class="actions">
+        <a href="https://docs.google.com/spreadsheets/d/1YUF-FAOVVmKnwTPnDJPxnS5274Li73LdW6_bD6sRgj4" target="_blank" class="button">Open Google Sheets</a>
+    </section>
+
+    
+    <div class="section actions">
+        <button class="button"  id="runAlgorithmButton">Run Algorithm</button>
+        <div class="loading" id="loading">Loading...</div>
+        <div class="done" id="done">Done!</div>
+    </div>
+
+    <footer>
+        <p>© Ben Dabush & Naama Shiponi</p>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            $('#runAlgorithmButton').click(function() {
+                $('#loading').show(); // Show loading indicator
+                $('#done').hide();    // Hide done message
+                $.ajax({
+                    url: '/run-algorithm',
+                    method: 'POST',
+                    success: function(response) {
+                        $('#done').show();   // Show done message
+                    },
+                    error: function(xhr, status, error) {
+                        alert("An error occurred: " + xhr.responseJSON.message);
+                    },
+                    complete: function() {
+                        $('#loading').hide(); // Hide loading indicator
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
