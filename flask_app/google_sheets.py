@@ -92,25 +92,25 @@ def get_google_sheets_data():
     # print(f"agent_conflicts: {agent_conflicts}, agent_capacities: {agent_capacities}, agent_budgets: {agent_budgets}")
 
 
-def update_results_google_sheets(res):
-    '''
-    res= {'Alice': ['c1', 'c3'], 'Bob': ['c2', 'c4'], 'Tom': ['c3'], 'Arad': ['c2']}
-    '''
+def update_results_google_sheets(res, agent_budgets):
+
     account = gspread.service_account("credentials.json")
 
     spreadsheet = account.open_by_url(os.getenv("GOOGLE_SHEETS_URL"))
     output_sheets = spreadsheet.worksheet("Output")
     
-    # Prepare data for update
     values = []
-    for student, courses in res.items():
-        row = [student] + courses
+    for student in agent_budgets:
+        row = [student] + res[student]
         values.append(row)
+    # # Prepare data for update
+    # values = []
+    # for student, courses in res.items():
+    #     row = [student] + courses
+    #     values.append(row)
     
-    # Clear the existing content in the sheet
     output_sheets.clear()
-
-    # Update the sheet with new data using named arguments to avoid deprecation warning
+    
     output_sheets.update(range_name='A2', values=values)
 
 
