@@ -10,6 +10,29 @@ body {
     color: #333;
     background: #f4f4f4;
 }
+.log-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+}
+
+.log, .log-output {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.log-output pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background: #f4f4f4;
+    padding: 1rem;
+    border-radius: 5px;
+}
 
 .loading {
     display: none;
