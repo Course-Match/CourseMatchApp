@@ -1,7 +1,8 @@
 import fairpyx.algorithms.course_match
 import fairpyx.algorithms.course_match.main_course_match
 from fairpyx.algorithms.course_match.A_CEEI import logger as ACEEI_logger
-# ... 
+from fairpyx.algorithms.course_match.remove_oversubscription import logger as remove_oversubscription_logger
+from fairpyx.algorithms.course_match.reduce_undersubscription import logger as reduce_undersubscription_logger 
 import logging
 from io import StringIO
 
@@ -10,6 +11,11 @@ log_stream = StringIO()
 ACEEI_logger.setLevel(logging.INFO)
 ACEEI_logger.addHandler(logging.StreamHandler(log_stream))
 
+remove_oversubscription_logger.setLevel(logging.INFO)
+remove_oversubscription_logger.addHandler(logging.StreamHandler(log_stream))
+
+reduce_undersubscription_logger.setLevel(logging.INFO)
+reduce_undersubscription_logger.addHandler(logging.StreamHandler(log_stream))
 
 from flask import Flask, render_template, jsonify
 from flask_app import app
@@ -32,8 +38,12 @@ def run_algorithm():
         allocation = fairpyx.divide(algorithm=fairpyx.algorithms.course_match.main_course_match.course_match_algorithm, instance=instance, budget=agent_budgets,time=5)
 
         update_results_google_sheets(allocation,agent_budgets)
-        # print(log_stream.getvalue())
+        print(log_stream.getvalue())
         
-        return jsonify({"status": "success", "message": "Algorithm executed successfully"})
+
+        log_contents = log_stream.getvalue()
+
+        return jsonify(log=log_contents)
+
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500

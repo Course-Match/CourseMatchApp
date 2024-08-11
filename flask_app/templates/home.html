@@ -29,11 +29,12 @@
         <a href="https://docs.google.com/spreadsheets/d/1YUF-FAOVVmKnwTPnDJPxnS5274Li73LdW6_bD6sRgj4" target="_blank" class="button">Open Google Sheets</a>
     </section>
 
-    
     <div class="section actions">
-        <button class="button"  id="runAlgorithmButton">Run Algorithm</button>
-        <div class="loading" id="loading">Loading...</div>
-        <div class="done" id="done">Done!</div>
+        <button class="button" id="runAlgorithmButton">Run Algorithm</button>
+        <div class="loading" id="loading" style="display:none;">Loading...</div>
+        <div class="done" id="done" style="display:none;">Done! </div>
+        <div class="log" id="log" style="display:none;">Logs of the algorithm:</div>        
+        <div class="log-output" id="logOutput"></div> <!-- Added section for log output -->
     </div>
 
     <footer>
@@ -43,13 +44,17 @@
     <script>
         $(document).ready(function() {
             $('#runAlgorithmButton').click(function() {
-                $('#loading').show(); // Show loading indicator
-                $('#done').hide();    // Hide done message
+                $('#loading').show();  // Show loading indicator
+                $('#done').hide();     // Hide done message
+                $('#log').hide(); 
+                $('#logOutput').empty(); // Clear previous log output
                 $.ajax({
                     url: '/run-algorithm',
                     method: 'POST',
                     success: function(response) {
                         $('#done').show();   // Show done message
+                        $('#log').show();
+                        $('#logOutput').html('<pre>' + response.log + '</pre>'); // Display log output
                     },
                     error: function(xhr, status, error) {
                         alert("An error occurred: " + xhr.responseJSON.message);
